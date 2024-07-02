@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 const connectDB = async() => {
     try {
-       await mongoose.connect("mongodb+srv://MAALTECK:w5AVQASXiqQsCUlQ@mern-medium-v1.eebfgfw.mongodb.net/mern-medium?retryWrites=true&w=majority&appName=mern-medium-v1");
+       await mongoose.connect("MongoDB URL- Security issue (Everyone will have there own db url");
         console.log("DB is connected");
     } catch (error) {
         console.log("DB connection is failed....", error.message);
