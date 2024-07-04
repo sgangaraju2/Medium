@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
+const asynchHandler = require("express-async-handler");
 const isLoggin = require("../../middleware/isLoggin");
 
 //@desc Register a new user
@@ -9,10 +10,10 @@ const isLoggin = require("../../middleware/isLoggin");
 const User = require("../../model/User/User");
 const generateToken = require("../../utils/generateToken");
 
-exports.register = async(req, res)=>{
+exports.register = asynchHandler(async(req, res)=>{
 
-    console.log(req.body);
-    try {
+    
+
         //get the details
         const {username, password, email} = req.body;
 
@@ -46,15 +47,9 @@ exports.register = async(req, res)=>{
             role: newUser?.role
         })
  
-    } catch (error) {
-        res.json({
-            status:'failed',
-            message: error?.message,
-        });
-        
-    }
     
-};
+    
+})
 
 
 
@@ -62,8 +57,8 @@ exports.register = async(req, res)=>{
 //@route POST /api/v1/users/login
 //@access public
 
-exports.login=async(req,res)=>{
-    try {
+exports.login= asynchHandler(async(req,res)=>{
+    
         //? get login details
         const { username, password } = req.body;
         //! Check if exists
@@ -80,43 +75,37 @@ exports.login=async(req,res)=>{
   user.lastLogin = new Date();
   res.json({
     status: "success",
-    user,
+    email:user?.email,
+    _id:user?._id,
+    username: user?.username,
+    role: user?.role,
     token: generateToken(user),
   });
-    } catch (error) {
-        res.json({
-            email: user?.email,
-      _id: user?._id,
-      username: user?.username,
-      role: user?.role,
-     token: generateToken(user),
-     profilePicture: user?.profilePicture,
-        isVerified: user?.isVerified,
-        })
-        
-    }
-}
+})
 
 //@desc  Get profile
 //@route GET /api/v1/users/public-profile/:userId
 //@access Public
 
-exports.getProfile = async (req,res) => {
-    try {
+exports.getProfile = asynchHandler(async (req,res, next) => {
+    //trigger custom error
+
+    // const myErr = new Error('my custom error');
+    // return next(myErr);
+
+    // console.log(req.userAuth);
+        //! get user id from params
+        const id =req.userAuth._id;
+        const user = await User.findById(id);
+
+        console.log(user);
         res.json({
             status: "success",
             message: "Profile Fetched",
             data:"user data",
+            user,
         });
-        
-    } catch (error) {
-        res.json({
-            status: "failed",
-            message: error?.message,
-        });
-        
-    }
-};
+})
 
 
 
