@@ -9,7 +9,13 @@ const usersRouter = require("./routes/users/usersRouter");
 const { notFound, globalErrHandler } = require('./middleware/globalErrorHandler');
 console.log('Before requiring categoryRouter');
 const categoryRouter = require("./routes/category/categoryRouter");
-console.log('After requiring categoryRouter');
+const postsRouter = require('./routes/post/postRouter');
+const commentRouter = require('./routes/comment/commentRouter');
+
+
+
+
+// console.log('After requiring categoryRouter');
 
 
 
@@ -17,6 +23,8 @@ console.log('After requiring categoryRouter');
 //db connect
 //connectDB();
 require('./config/database')();
+
+
 
 //! Server 
 const app = express();
@@ -32,6 +40,10 @@ app.use(express.json()); //Pass incoming data
 app.use('/api/v1/users',usersRouter);
 
 app.use('/api/v1/categories',categoryRouter);
+
+
+app.use('/api/v1/posts',postsRouter);
+app.use('/api/v1/comments',commentRouter);
 
 //!Not found middleware
 app.use(notFound);
