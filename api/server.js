@@ -11,8 +11,9 @@ console.log('Before requiring categoryRouter');
 const categoryRouter = require("./routes/category/categoryRouter");
 const postsRouter = require('./routes/post/postRouter');
 const commentRouter = require('./routes/comment/commentRouter');
+const sendEmail = require('./utils/sendEmail');
 
-
+sendEmail("saikirankumar.gangaraju@gmail.com","mernstack");
 
 
 // console.log('After requiring categoryRouter');
